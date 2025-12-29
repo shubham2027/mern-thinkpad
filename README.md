@@ -127,8 +127,5 @@ mern-thinkpad/
 
 ## Rate Limiting
 
-The API is protected with rate limiting (10 requests per 10 seconds) using Upstash Redis to prevent abuse.
+The API is protected with rate limiting (100 requests per 60 seconds) using Upstash Redis to prevent abuse.
 
-## License
-
-ISC

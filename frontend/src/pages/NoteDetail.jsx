@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import api from "../lib/axios";
 import toast from "react-hot-toast";
@@ -11,7 +10,6 @@ const NoteDetail = () => {
   const [saving, setSaving] = useState(false);
 
   const navigate = useNavigate();
-
   const { id } = useParams();
 
   useEffect(() => {
@@ -31,7 +29,6 @@ const NoteDetail = () => {
   }, [id]);
 
   const handleDelete = async () => {
-    
     if (!window.confirm("Are you sure you want to delete this note?")) return;
 
     try {
@@ -66,14 +63,14 @@ const NoteDetail = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-base-200 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <LoaderIcon className="animate-spin size-10" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-base-200">
+    <div className="min-h-screen">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
           <div className="flex items-center justify-between mb-6">
@@ -87,7 +84,7 @@ const NoteDetail = () => {
             </button>
           </div>
 
-          <div className="card bg-base-100">
+          <div className="card bg-base-100/80 backdrop-blur-md shadow-lg">
             <div className="card-body">
               <div className="form-control mb-4">
                 <label className="label">
@@ -126,4 +123,5 @@ const NoteDetail = () => {
     </div>
   );
 };
+
 export default NoteDetail;

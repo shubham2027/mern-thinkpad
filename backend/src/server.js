@@ -5,6 +5,7 @@ import path from 'path';
 
 
 import notesRoutes from './routes/notesRoutes.js';
+import authRoutes from './routes/authRoutes.js';
 import { connectDB } from './config/db.js';
 import rateLimiter from './middleware/rateLimiter.js';
 
@@ -23,9 +24,8 @@ if(process.env.NODE_ENV !== 'production'){
 app.use(express.json()); // this middleware parses JSON bodies: req.body
 app.use(rateLimiter)
 
-
-
 app.use("/api/notes", notesRoutes);
+app.use("/api/auth", authRoutes);
 
 if(process.env.NODE_ENV === 'production'){ // only for production build
   app.use(express.static(path.join(__dirname, '../frontend/dist')));
@@ -39,7 +39,7 @@ if(process.env.NODE_ENV === 'production'){ // only for production build
 
 connectDB().then(() => {
     app.listen(PORT, () => {
-      console.log('Server is running on port 5001');
+      console.log(`Server is running on port ${PORT}`);
     });
 });
 

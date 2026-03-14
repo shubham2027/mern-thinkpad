@@ -5,9 +5,11 @@ A full-stack note-taking application built with the MERN stack (MongoDB, Express
 ## Features
 
 - 📝 Create, read, and manage notes
+- 🔐 JWT authentication (signup, login, protected routes)
+- 👤 User-scoped notes (each user can only access their own notes)
 - ⚡ Fast and responsive UI with Vite
 - 🎨 Beautiful UI with Tailwind CSS and DaisyUI
-- 🔐 Rate limiting to prevent abuse
+- 🚦 API rate limiting to prevent abuse
 - 📱 Responsive design
 - 🔄 Real-time API integration with Axios
 
@@ -27,6 +29,8 @@ A full-stack note-taking application built with the MERN stack (MongoDB, Express
 - **Node.js** with **Express** 4.18.2 - Server framework
 - **MongoDB** - Database
 - **Mongoose** 8.14.3 - ODM for MongoDB
+- **JWT (jsonwebtoken)** - Access token authentication
+- **bcryptjs** - Password hashing
 - **Upstash Redis** - Rate limiting service
 - **CORS** - Cross-origin resource sharing
 - **Dotenv** - Environment variables
@@ -54,6 +58,7 @@ A full-stack note-taking application built with the MERN stack (MongoDB, Express
    ```env
    MONGO_URI=your_mongodb_uri
    PORT=5001
+   JWT_SECRET=your_super_secret_jwt_key
    UPSTASH_REDIS_REST_URL=your_upstash_url
    UPSTASH_REDIS_REST_TOKEN=your_upstash_token
    ```
@@ -119,13 +124,36 @@ mern-thinkpad/
 
 ## API Endpoints
 
-- `GET /api/notes` - Get all notes
-- `POST /api/notes` - Create a new note
-- `GET /api/notes/:id` - Get a specific note
-- `PUT /api/notes/:id` - Update a note
-- `DELETE /api/notes/:id` - Delete a note
+### Auth
+
+- `POST /api/auth/signup` - Create a new user account
+- `POST /api/auth/login` - Login and get JWT token
+- `GET /api/auth/me` - Get current user profile (protected)
+
+### Notes (Protected)
+
+- `GET /api/notes` - Get all notes for the authenticated user
+- `POST /api/notes` - Create a new note for the authenticated user
+- `GET /api/notes/:id` - Get one of the authenticated user's notes
+- `PUT /api/notes/:id` - Update one of the authenticated user's notes
+- `DELETE /api/notes/:id` - Delete one of the authenticated user's notes
+
+All notes endpoints require a Bearer token in the Authorization header:
+
+```http
+Authorization: Bearer <jwt_token>
+```
+
+## Authentication Flow
+
+1. User signs up or logs in from the frontend (`/signup` or `/login`).
+2. Backend validates credentials and returns a JWT token.
+3. Frontend stores the token in localStorage.
+4. Axios request interceptor automatically attaches `Authorization: Bearer <token>`.
+5. Protected frontend routes redirect unauthenticated users to `/login`.
+6. If API returns `401`, frontend removes token and redirects to `/login`.
 
 ## Rate Limiting
 
-The API is protected with rate limiting (100 requests per 60 seconds) using Upstash Redis to prevent abuse.
+The API is protected with Upstash Redis rate limiting middleware to prevent abuse and excessive request bursts.
 

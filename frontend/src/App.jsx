@@ -7,12 +7,19 @@ import NoteDetail from "./pages/NoteDetail.jsx";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
-import AppBackground from "./components/AppBackground.jsx";
+import TargetCursor from "./components/TargetCursor.jsx";
 
 const App = () => {
   return (
     <div className="relative min-h-screen w-full isolate" data-theme="forest">
-      <AppBackground />
+      
+      <TargetCursor
+        targetSelector="button, a, .cursor-target"
+        spinDuration={2}
+        hideDefaultCursor
+        parallaxOn
+        hoverDuration={0.2}
+      />
 
       <div className="relative z-10">
         <Routes>

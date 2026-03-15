@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router';
-import { LogOutIcon, PlusIcon } from 'lucide-react';
+import { LogOutIcon, PlusIcon, UserCircle2Icon } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { removeToken } from '../lib/auth';
 
@@ -29,10 +29,18 @@ const Navbar = () => {
               </Link>
             )}
 
-            {/* [AUTH-EDIT-3] logout button */}
-            <button className='btn btn-outline' onClick={handleLogout}>
-              <LogOutIcon className='size-5' /> Logout
-            </button>
+            <div className='dropdown dropdown-end'>
+              <button tabIndex={0} className='btn btn-ghost btn-circle border border-base-content/20'>
+                <UserCircle2Icon className='size-6' />
+              </button>
+              <ul tabIndex={0} className='menu dropdown-content z-[1] mt-3 w-44 rounded-box bg-base-100 p-2 shadow'>
+                <li>
+                  <button onClick={handleLogout}>
+                    <LogOutIcon className='size-4' /> Logout
+                  </button>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>

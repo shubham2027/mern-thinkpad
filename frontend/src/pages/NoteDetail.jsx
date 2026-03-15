@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router";
 import api from "../lib/axios";
 import toast from "react-hot-toast";
 import { ArrowLeftIcon, LoaderIcon, Trash2Icon } from "lucide-react";
+import Navbar from "../components/Navbar";
 
 const NoteDetail = () => {
   const [note, setNote] = useState(null);
@@ -63,15 +64,30 @@ const NoteDetail = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <LoaderIcon className="animate-spin size-10" />
+      <div className="relative min-h-screen overflow-hidden">
+        <div className="pointer-events-none absolute inset-0 -z-0">
+          <div className="absolute -top-20 -left-20 h-72 w-72 rounded-full bg-emerald-400/25 blur-3xl" />
+          <div className="absolute top-1/3 right-10 h-80 w-80 rounded-full bg-green-300/20 blur-3xl" />
+          <div className="absolute -bottom-24 left-1/3 h-72 w-72 rounded-full bg-emerald-300/20 blur-3xl" />
+        </div>
+        <div className="relative z-10 flex min-h-screen items-center justify-center">
+          <LoaderIcon className="animate-spin size-10" />
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen">
-      <div className="container mx-auto px-4 py-8">
+    <div className="relative min-h-screen overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 -z-0">
+        <div className="absolute -top-20 -left-20 h-72 w-72 rounded-full bg-emerald-400/25 blur-3xl" />
+        <div className="absolute top-1/3 right-10 h-80 w-80 rounded-full bg-green-300/20 blur-3xl" />
+        <div className="absolute -bottom-24 left-1/3 h-72 w-72 rounded-full bg-blue-300/20 blur-3xl" />
+      </div>
+
+      <Navbar />
+
+      <div className="relative z-10 container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
           <div className="flex items-center justify-between mb-6">
             <Link to="/" className="btn btn-ghost">
@@ -84,7 +100,7 @@ const NoteDetail = () => {
             </button>
           </div>
 
-          <div className="card bg-base-100/80 backdrop-blur-md shadow-lg">
+          <div className="card border border-white/15 bg-base-100/35 shadow-[0_8px_50px_rgba(16,185,129,0.15)] backdrop-blur-xl">
             <div className="card-body">
               <div className="form-control mb-4">
                 <label className="label">

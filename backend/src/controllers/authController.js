@@ -17,10 +17,18 @@ export const signup = async (req, res) => {
     const normalizedEmail = email.toLowerCase().trim();
 
     const existing = await User.findOne({ email: normalizedEmail });
+
+    
     if (existing) {
+      // 🔥 NEW LOGIC (important for Google users)
+      if (existing.googleId && !existing.passwordHash) {
+        return res.status(400).json({
+          message: "Account already exists with Google. Please login with Google."
+        });
+      }
+
       return res.status(409).json({ message: "Email already registered" });
     }
-
     const passwordHash = await bcrypt.hash(password, 10);
 
     const user = await User.create({
@@ -56,6 +64,13 @@ export const login = async (req, res) => {
     const user = await User.findOne({ email: normalizedEmail });
     if (!user) {
       return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    // 🔥 NEW LOGIC: block Google-only users
+    if (user.googleId && !user.passwordHash){
+      return res.status(400).json({
+        message: "Please login using Google"
+      });
     }
 
     const valid = await bcrypt.compare(password, user.passwordHash);

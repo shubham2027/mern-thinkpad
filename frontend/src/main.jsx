@@ -5,11 +5,17 @@ import App from './App.jsx'
 import { BrowserRouter } from 'react-router'
 import { Toaster } from 'react-hot-toast'
 
+import { GoogleOAuthProvider } from "@react-oauth/google";
+  
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
-      <App />
-      <Toaster />
-    </BrowserRouter>
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+      <BrowserRouter>
+        <App />
+        <Toaster/>
+      </BrowserRouter>
+    </GoogleOAuthProvider>
   </StrictMode>,
 )
+

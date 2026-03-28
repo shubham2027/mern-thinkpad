@@ -11,7 +11,21 @@ const userSchema = new mongoose.Schema(
     },
     passwordHash: {
       type: String,
-      required: true
+      default: null  // Changed: Make optional for Google auth
+    },
+    googleId: {
+      type: String,
+      unique: true,
+      sparse: true, // Allow multiple nulls
+      default: null
+    },
+    name: {
+      type: String,
+      default: null
+    },
+    picture: {
+      type: String,
+      default: null
     }
   },
   { timestamps: true }

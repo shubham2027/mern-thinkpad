@@ -1,159 +1,203 @@
 # MERN Thinkpad
 
-A full-stack note-taking application built with the MERN stack (MongoDB, Express, React, Node.js).
+Full-stack note-taking app built with MongoDB, Express, React, and Node.js.
 
 ## Features
 
-- 📝 Create, read, and manage notes
-- 🔐 JWT authentication (signup, login, protected routes)
-- 👤 User-scoped notes (each user can only access their own notes)
-- ⚡ Fast and responsive UI with Vite
-- 🎨 Beautiful UI with Tailwind CSS and DaisyUI
-- 🚦 API rate limiting to prevent abuse
-- 📱 Responsive design
-- 🔄 Real-time API integration with Axios
+- Notes CRUD with per-user ownership
+- JWT auth (email/password)
+- Google Sign-In auth
+- Protected frontend routes
+- Axios auth interceptor with auto Bearer token
+- Upstash Redis rate limiting
+- Tailwind + DaisyUI UI
 
 ## Tech Stack
 
 ### Frontend
-- **React** 19.2.0 - UI library
-- **Vite** 7.2.4 - Build tool
-- **React Router** 7.11.0 - Client-side routing
-- **Tailwind CSS** 4.1.18 - Utility-first CSS framework
-- **DaisyUI** 5.5.14 - Tailwind CSS component library
-- **Axios** 1.13.2 - HTTP client
-- **React Hot Toast** 2.6.0 - Notifications
-- **Lucide React** 0.562.0 - Icon library
+
+- React 19
+- Vite
+- React Router
+- Axios
+- React Hot Toast
+- Tailwind CSS + DaisyUI
+- @react-oauth/google
 
 ### Backend
-- **Node.js** with **Express** 4.18.2 - Server framework
-- **MongoDB** - Database
-- **Mongoose** 8.14.3 - ODM for MongoDB
-- **JWT (jsonwebtoken)** - Access token authentication
-- **bcryptjs** - Password hashing
-- **Upstash Redis** - Rate limiting service
-- **CORS** - Cross-origin resource sharing
-- **Dotenv** - Environment variables
 
-## Getting Started
+- Node.js + Express
+- MongoDB + Mongoose
+- jsonwebtoken
+- bcryptjs
+- google-auth-library
+- Upstash Redis rate limiting
 
-### Prerequisites
-- Node.js (v14 or higher)
-- npm or yarn
+## Project Structure
 
-### Installation
+```text
+mern-thinkpad/
+|-- backend/
+|   |-- src/
+|   |   |-- config/
+|   |   |-- controllers/
+|   |   |-- middleware/
+|   |   |-- models/
+|   |   |-- routes/
+|   |   `-- server.js
+|   `-- package.json
+|-- frontend/
+|   |-- src/
+|   |   |-- components/
+|   |   |-- lib/
+|   |   |-- pages/
+|   |   |-- App.jsx
+|   |   `-- main.jsx
+|   `-- package.json
+`-- package.json
+```
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd mern-thinkpad
-   ```
+## Environment Variables
 
-2. **Backend Setup**
-   ```bash
-   cd backend
-   npm install
-   ```
-   Create a `.env` file with:
-   ```env
-   MONGO_URI=your_mongodb_uri
-   PORT=5001
-   JWT_SECRET=your_super_secret_jwt_key
-   UPSTASH_REDIS_REST_URL=your_upstash_url
-   UPSTASH_REDIS_REST_TOKEN=your_upstash_token
-   ```
+### Backend (.env)
 
-3. **Frontend Setup**
-   ```bash
-   cd ../frontend
-   npm install
-   ```
+```env
+MONGO_URI=your_mongodb_connection_string
+PORT=5001
+NODE_ENV=development
+JWT_SECRET=your_jwt_secret
 
-## Running the Application
+UPSTASH_REDIS_REST_URL=your_upstash_url
+UPSTASH_REDIS_REST_TOKEN=your_upstash_token
 
-### Development Mode
+GOOGLE_CLIENT_ID=your_google_oauth_client_id
+GOOGLE_CLIENT_SECRET=your_google_oauth_client_secret
 
-**Terminal 1 - Backend:**
+FRONTEND_URL=http://localhost:5173
+```
+
+### Frontend (.env.local)
+
+```env
+VITE_GOOGLE_CLIENT_ID=your_google_oauth_client_id
+```
+
+## Local Development
+
+Install dependencies:
+
+```bash
+npm install --prefix backend
+npm install --prefix frontend
+```
+
+Run backend:
+
 ```bash
 cd backend
 npm run dev
 ```
-Server runs on `http://localhost:5001`
 
-**Terminal 2 - Frontend:**
+Run frontend:
+
 ```bash
 cd frontend
 npm run dev
 ```
-App runs on `http://localhost:5173`
 
-### Production Build
+Default ports:
 
-**Frontend:**
+- Backend: http://localhost:5001
+- Frontend: http://localhost:5173
+
+Note: Vite may move to 5174/5175 if 5173 is already in use.
+
+## Root Scripts
+
+From repository root:
+
 ```bash
 npm run build
-npm run preview
+npm run start
 ```
 
-## Project Structure
-
-```
-mern-thinkpad/
-├── backend/
-│   ├── src/
-│   │   ├── server.js           # Express server
-│   │   ├── config/
-│   │   │   ├── db.js           # MongoDB connection
-│   │   │   └── upstash.js      # Rate limiter config
-│   │   ├── controllers/        # Business logic
-│   │   ├── models/             # MongoDB schemas
-│   │   ├── routes/             # API routes
-│   │   └── middleware/         # Custom middleware
-│   └── package.json
-│
-└── frontend/
-    ├── src/
-    │   ├── components/         # React components
-    │   ├── pages/              # Page components
-    │   ├── lib/                # Utilities (axios)
-    │   ├── App.jsx
-    │   ├── main.jsx
-    │   └── index.css
-    └── package.json
-```
+- build: installs backend + frontend dependencies and builds frontend
+- start: starts backend service
 
 ## API Endpoints
 
 ### Auth
 
-- `POST /api/auth/signup` - Create a new user account
-- `POST /api/auth/login` - Login and get JWT token
-- `GET /api/auth/me` - Get current user profile (protected)
+- POST /api/auth/signup
+- POST /api/auth/login
+- POST /api/auth/google
+- GET /api/auth/me
 
-### Notes (Protected)
+### Notes (protected)
 
-- `GET /api/notes` - Get all notes for the authenticated user
-- `POST /api/notes` - Create a new note for the authenticated user
-- `GET /api/notes/:id` - Get one of the authenticated user's notes
-- `PUT /api/notes/:id` - Update one of the authenticated user's notes
-- `DELETE /api/notes/:id` - Delete one of the authenticated user's notes
+- GET /api/notes
+- POST /api/notes
+- GET /api/notes/:id
+- PUT /api/notes/:id
+- DELETE /api/notes/:id
 
-All notes endpoints require a Bearer token in the Authorization header:
+Protected routes require:
 
 ```http
 Authorization: Bearer <jwt_token>
 ```
 
-## Authentication Flow
+## Authentication Behavior
 
-1. User signs up or logs in from the frontend (`/signup` or `/login`).
-2. Backend validates credentials and returns a JWT token.
-3. Frontend stores the token in localStorage.
-4. Axios request interceptor automatically attaches `Authorization: Bearer <token>`.
-5. Protected frontend routes redirect unauthenticated users to `/login`.
-6. If API returns `401`, frontend removes token and redirects to `/login`.
+- Email/password auth issues a JWT token valid for 7 days
+- Google Sign-In verifies Google ID token on backend and returns app JWT
+- Token is stored in localStorage (mindscribe_token)
+- Axios adds Authorization header automatically
+- On 401, frontend logs out and redirects to /login (except on auth pages)
+
+## Database Models
+
+### User
+
+- email (unique, required)
+- passwordHash (nullable for Google-only users)
+- googleId (unique, sparse, nullable)
+- name (nullable)
+- picture (nullable)
+
+### Note
+
+- userId (ObjectId ref User, required)
+- title (required)
+- content (required)
 
 ## Rate Limiting
 
-The API is protected with Upstash Redis rate limiting middleware to prevent abuse and excessive request bursts.
+Upstash sliding window limiter is enabled globally in backend middleware.
+
+## Deployment (Render)
+
+Set all backend environment variables in Render:
+
+- MONGO_URI
+- JWT_SECRET
+- UPSTASH_REDIS_REST_URL
+- UPSTASH_REDIS_REST_TOKEN
+- GOOGLE_CLIENT_ID
+- GOOGLE_CLIENT_SECRET
+- FRONTEND_URL
+- NODE_ENV=production
+
+If frontend is hosted separately, also set VITE_GOOGLE_CLIENT_ID in the frontend service.
+
+Update Google OAuth configuration in Google Cloud Console:
+
+- Authorized JavaScript origins: your local and production frontend URLs
+- Authorized redirect URIs: add only if using callback flow
+
+## Common Troubleshooting
+
+- Google token missing: ensure frontend sends idToken and backend expects idToken
+- OAuth origin errors: verify Google Cloud Console origins match deployed domain
+- EADDRINUSE: free occupied local ports before running dev servers
 

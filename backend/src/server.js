@@ -27,6 +27,15 @@ app.use(rateLimiter)
 app.use("/api/notes", notesRoutes);
 app.use("/api/auth", authRoutes);
 
+app.get("/api/health", (req, res) => {
+  res.status(200).json({
+    ok: true,
+    service: "backend",
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+  });
+});
+
 if(process.env.NODE_ENV === 'production'){ // only for production build
   app.use(express.static(path.join(__dirname, '../frontend/dist')));
 

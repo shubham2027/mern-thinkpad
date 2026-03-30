@@ -6,6 +6,7 @@ import Create from "./pages/Create.jsx";
 import NoteDetail from "./pages/NoteDetail.jsx";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
+import Settings from "./pages/Settings.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import TargetCursor from "./components/TargetCursor.jsx";
 
@@ -47,6 +48,14 @@ const App = () => {
             element={
               <ProtectedRoute>
                 <NoteDetail />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <Settings />
               </ProtectedRoute>
             }
           />

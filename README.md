@@ -5,10 +5,15 @@ Full-stack note-taking app built with MongoDB, Express, React, and Node.js.
 ## Features
 
 - Notes CRUD with per-user ownership
+- Search notes by words in title/content
+- Pin/unpin notes and keep pinned notes on top
+- Notes filter (All, Pinned, Unpinned)
 - JWT auth (email/password)
 - Google Sign-In auth
 - Protected frontend routes
 - Axios auth interceptor with auto Bearer token
+- Settings page with profile details
+- Feedback form integration using Web3Forms
 - Upstash Redis rate limiting
 - Tailwind + DaisyUI UI
 
@@ -23,6 +28,7 @@ Full-stack note-taking app built with MongoDB, Express, React, and Node.js.
 - React Hot Toast
 - Tailwind CSS + DaisyUI
 - @react-oauth/google
+- Web3Forms (HTTP API integration)
 
 ### Backend
 
@@ -80,7 +86,10 @@ FRONTEND_URL=http://localhost:5173
 
 ```env
 VITE_GOOGLE_CLIENT_ID=your_google_oauth_client_id
+VITE_WEB3FORMS_ACCESS_KEY=your_web3forms_access_key
 ```
+
+Note: If `VITE_WEB3FORMS_ACCESS_KEY` is not set, the app currently falls back to an in-code Web3Forms key in the settings page.
 
 ## Local Development
 
@@ -138,8 +147,20 @@ npm run start
 - GET /api/notes
 - POST /api/notes
 - GET /api/notes/:id
+- PATCH /api/notes/:id/pin
 - PUT /api/notes/:id
 - DELETE /api/notes/:id
+
+`GET /api/notes` query params:
+
+- `q` (string): search in title and content
+- `pinned` (`all` | `true` | `false`): filter by pin status
+
+### Feedback (protected)
+
+- POST /api/feedback
+
+Note: Settings page feedback is sent directly from frontend to Web3Forms. The backend feedback endpoint is available and stores feedback records.
 
 Protected routes require:
 
@@ -154,6 +175,15 @@ Authorization: Bearer <jwt_token>
 - Token is stored in localStorage (mindscribe_token)
 - Axios adds Authorization header automatically
 - On 401, frontend logs out and redirects to /login (except on auth pages)
+
+## Frontend Routes
+
+- `/` Home (protected)
+- `/create` Create note (protected)
+- `/note/:id` Note detail/edit (protected)
+- `/settings` Account + feedback (protected)
+- `/login`
+- `/signup`
 
 ## Database Models
 
@@ -170,6 +200,14 @@ Authorization: Bearer <jwt_token>
 - userId (ObjectId ref User, required)
 - title (required)
 - content (required)
+- pinned (boolean, default `false`)
+
+### Feedback
+
+- userId (ObjectId ref User, required)
+- email (required)
+- subject (required)
+- message (required)
 
 ## Rate Limiting
 
@@ -189,6 +227,11 @@ Set all backend environment variables in Render:
 - NODE_ENV=production
 
 If frontend is hosted separately, also set VITE_GOOGLE_CLIENT_ID in the frontend service.
+
+Frontend env vars to set in deployment:
+
+- VITE_GOOGLE_CLIENT_ID
+- VITE_WEB3FORMS_ACCESS_KEY
 
 Update Google OAuth configuration in Google Cloud Console:
 

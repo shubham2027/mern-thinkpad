@@ -1,11 +1,20 @@
 import React from 'react'
-import { Link, useNavigate } from 'react-router'
-import { PenSquareIcon } from 'lucide-react';
+import { Link } from 'react-router'
+import { PenSquareIcon, PinIcon } from 'lucide-react';
 import { Trash2Icon } from 'lucide-react';
 import api from '../lib/axios';
 import toast from 'react-hot-toast';
 
 const NoteCard = ({note, setNotes}) => {
+    const sortPinnedFirst = (noteList) => {
+        return [...noteList].sort((a, b) => {
+            if (a.pinned === b.pinned) {
+                return new Date(b.createdAt) - new Date(a.createdAt);
+            }
+            return a.pinned ? -1 : 1;
+        });
+    };
+
     const handleDelete = async (e, noteId)=>{
         e.preventDefault();// get rid of the navigaition behavior
         
@@ -25,6 +34,25 @@ const NoteCard = ({note, setNotes}) => {
         }
 
     }
+
+    const handleTogglePin = async (e, noteId) => {
+        e.preventDefault();
+
+        try {
+            const res = await api.patch(`/notes/${noteId}/pin`);
+            const updatedNote = res.data;
+
+            setNotes((prevNotes) => {
+                const nextNotes = prevNotes.map((n) => n._id === noteId ? updatedNote : n);
+                return sortPinnedFirst(nextNotes);
+            });
+            toast.success(updatedNote.pinned ? "Note pinned" : "Note unpinned");
+        } catch (error) {
+            console.error("Error pinning note:", error);
+            toast.error("Failed to update pin");
+        }
+    };
+
   return (
     <Link to={`/note/${note._id}`}
         className='card bg-base-100 hover:shadow-lg transition-all duration-200 border-t-4 border-solid border-[#00FF9D] bg-base-100/80 backdrop-blur-md shadow-lg'
@@ -38,6 +66,9 @@ const NoteCard = ({note, setNotes}) => {
                    {note.createdAt.split('T')[0]} 
                 </span>
                 <div className='flex flex-center '>
+                    <button className={`btn btn-ghost btn-xs ${note.pinned ? 'text-warning' : ''}`} onClick={(e) => handleTogglePin(e, note._id)}>
+                        <PinIcon className='size-5'/>
+                    </button>
                     <button className='btn btn-ghost btn-xs'>
                         <PenSquareIcon className='size-5'/>
                     </button>

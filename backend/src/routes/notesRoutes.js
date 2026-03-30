@@ -1,5 +1,5 @@
 import express from 'express';
-import { createNote, deleteNote, getAllNotes, getNoteById, updateNote } from '../controllers/notesController.js';
+import { createNote, deleteNote, getAllNotes, getNoteById, togglePin, updateNote } from '../controllers/notesController.js';
 import { protect } from '../middleware/authMiddleware.js';
 const router = express.Router();
 
@@ -8,6 +8,7 @@ router.use(protect); // apply auth middleware to all routes in this router
 router.get("/", getAllNotes);
 router.get("/:id", getNoteById);
 router.post("/", createNote);
+router.patch("/:id/pin", togglePin);
 router.put("/:id", updateNote);
 router.delete("/:id", deleteNote);
 

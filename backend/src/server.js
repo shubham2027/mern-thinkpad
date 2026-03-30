@@ -6,6 +6,7 @@ import path from 'path';
 
 import notesRoutes from './routes/notesRoutes.js';
 import authRoutes from './routes/authRoutes.js';
+import feedbackRoutes from './routes/feedbackRoutes.js';
 import { connectDB } from './config/db.js';
 import rateLimiter from './middleware/rateLimiter.js';
 
@@ -26,6 +27,7 @@ app.use(rateLimiter)
 
 app.use("/api/notes", notesRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/feedback", feedbackRoutes);
 
 app.get("/api/health", (req, res) => {
   res.status(200).json({

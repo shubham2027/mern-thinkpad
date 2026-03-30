@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import Navbar from '../components/Navbar'
 import RateLimit from '../components/RateLimit';
 import { useState } from 'react';
-import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import NoteCard from '../components/NoteCard';
 import api from '../lib/axios';
@@ -12,12 +11,28 @@ const Home = () => {
   const [isRatelimited, setIsRatelimited] = useState(true);    
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+  const [pinFilter, setPinFilter] = useState("all");
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 350);
+
+    return () => clearTimeout(timeoutId);
+  }, [searchTerm]);
 
   useEffect(()=>{
     const fetchNotes = async ()=>{
+      setLoading(true);
       try {
-        const res = await api.get('/notes');
-        console.log(res.data);
+        const res = await api.get('/notes', {
+          params: {
+            q: debouncedSearchTerm,
+            pinned: pinFilter,
+          },
+        });
         setNotes(res.data);
         setIsRatelimited(false);
       } catch (error) {
@@ -34,7 +49,7 @@ const Home = () => {
       }
     }
     fetchNotes();
-  },[])
+  },[debouncedSearchTerm, pinFilter])
 
   return (
     <div className='relative min-h-screen overflow-hidden'>
@@ -52,6 +67,28 @@ const Home = () => {
 
       <div className='relative z-10 mx-auto mt-6 max-w-7xl p-4'>
         <div className='rounded-3xl border border-white/15 bg-base-100/35 p-5 shadow-[0_8px_50px_rgba(16,185,129,0.15)] backdrop-blur-xl md:p-6'>
+          <div className='mb-6 grid grid-cols-1 gap-3 md:grid-cols-3'>
+            <label className='input input-bordered flex items-center gap-2 md:col-span-2'>
+              <input
+                type='text'
+                className='grow'
+                placeholder='Search notes by title or content...'
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </label>
+
+            <select
+              className='select select-bordered w-full'
+              value={pinFilter}
+              onChange={(e) => setPinFilter(e.target.value)}
+            >
+              <option value='all'>All notes</option>
+              <option value='true'>Pinned only</option>
+              <option value='false'>Unpinned only</option>
+            </select>
+          </div>
+
           {loading && <div className='py-10 text-center text-primary'> Loading notes... </div>}
 
           {!loading && notes.length === 0 && !isRatelimited && <NotesNotFound/>}

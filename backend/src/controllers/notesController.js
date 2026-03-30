@@ -1,11 +1,32 @@
 import Note from '../models/Note.js';
 
+function escapeRegex(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
 
 export async function getAllNotes(req, res) {
   try {
-    // const notes = await Note.find({ userId: req.user.id }).sort({ createdAt: -1 }); // fetch all notes from db, sorted by createdAt in descending order
-      
-    const notes = await Note.find({ userId: req.user.id }).sort({ createdAt: -1 });
+    const { q = "", pinned = "all" } = req.query;
+    const filter = { userId: req.user.id };
+
+    if (pinned === "true") {
+      filter.pinned = true;
+    } else if (pinned === "false") {
+      // Include legacy notes where `pinned` may not exist yet.
+      filter.pinned = { $ne: true };
+    }
+
+    if (q.trim()) {
+      const escapedSearch = escapeRegex(q.trim());
+      filter.$or = [
+        { title: { $regex: escapedSearch, $options: "i" } },
+        { content: { $regex: escapedSearch, $options: "i" } }
+      ];
+    }
+
+    // Keep pinned notes at top, newest first inside each group.
+    const notes = await Note.find(filter).sort({ pinned: -1, createdAt: -1 });
 
     res.status(200).json(notes);
   } catch (error) {
@@ -94,3 +115,21 @@ export async function deleteNote(req, res) {
     res.status(500).json({ message: "Internal server error" } );
   }
 }       
+
+export async function togglePin(req, res) {
+  try {
+    const existingNote = await Note.findOne({ _id: req.params.id, userId: req.user.id });
+
+    if (!existingNote) {
+      return res.status(404).json({ message: "Note not found" });
+    }
+
+    existingNote.pinned = !existingNote.pinned;
+    const updatedNote = await existingNote.save();
+
+    res.status(200).json(updatedNote);
+  } catch (error) {
+    console.error("Error in togglePin Controller: ", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}

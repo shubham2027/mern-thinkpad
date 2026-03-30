@@ -19,6 +19,10 @@ const noteSchema = new mongoose.Schema(
             type: String,
             required: true
         },
+        pinned: {
+            type: Boolean,
+            default: false
+        },
 
     }, {timestamps: true} // automatically adds createdAt and updatedAt fields 
 );

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router';
-import { LogOutIcon, PlusIcon, UserCircle2Icon } from 'lucide-react';
+import { LogOutIcon, PlusIcon, SettingsIcon, UserCircle2Icon } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { removeToken } from '../lib/auth';
 
@@ -16,7 +16,7 @@ const Navbar = () => {
   };
 
   return (
-    <header className='bg-base-300 boder-b border-base-content/10'>
+    <header className='relative z-50 bg-base-300 boder-b border-base-content/10'>
       <div className='mx-auto max-w-6xl p-4'>
         <div className='flex items-center justify-between'>
           <h1 className='text-3xl font-bold text-primary font-mono tracking-tighter'>Mindscribe</h1>
@@ -33,9 +33,14 @@ const Navbar = () => {
               <button tabIndex={0} className='btn btn-ghost btn-circle border border-base-content/20'>
                 <UserCircle2Icon className='size-6' />
               </button>
-              <ul tabIndex={0} className='menu dropdown-content z-[1] mt-3 w-44 rounded-box bg-base-100 p-2 shadow'>
+              <ul tabIndex={0} className='menu dropdown-content z-[100] mt-3 w-44 rounded-box border border-base-content/10 bg-base-100 p-2 text-base-content shadow-xl'>
                 <li>
-                  <button onClick={handleLogout}>
+                  <Link to="/settings" className='text-base-content'>
+                    <SettingsIcon className='size-4' /> Settings
+                  </Link>
+                </li>
+                <li>
+                  <button onClick={handleLogout} className='text-base-content'>
                     <LogOutIcon className='size-4' /> Logout
                   </button>
                 </li>

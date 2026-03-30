@@ -95,10 +95,19 @@ export const login = async (req, res) => {
 
 export const me = async (req, res) => {
   try {
+    const user = await User.findById(req.user.id).select("email name picture createdAt");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
     return res.status(200).json({
       user: {
-        id: req.user.id,
-        email: req.user.email
+        id: user._id.toString(),
+        email: user.email,
+        name: user.name,
+        picture: user.picture,
+        createdAt: user.createdAt,
       }
     });
   } catch (error) {

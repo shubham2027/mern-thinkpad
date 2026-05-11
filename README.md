@@ -8,6 +8,8 @@ Full-stack note-taking app built with MongoDB, Express, React, and Node.js.
 - Search notes by words in title/content
 - Pin/unpin notes and keep pinned notes on top
 - Notes filter (All, Pinned, Unpinned)
+- Integrated Tldraw drawing editor for visual note-taking
+- Save and load drawing snapshots with notes
 - JWT auth (email/password)
 - Google Sign-In auth
 - Protected frontend routes
@@ -28,6 +30,7 @@ Full-stack note-taking app built with MongoDB, Express, React, and Node.js.
 - React Hot Toast
 - Tailwind CSS + DaisyUI
 - @react-oauth/google
+- Tldraw (drawing editor)
 - Web3Forms (HTTP API integration)
 
 ### Backend
@@ -55,6 +58,10 @@ mern-thinkpad/
 |-- frontend/
 |   |-- src/
 |   |   |-- components/
+|   |   |   |-- TldrawEditor.jsx
+|   |   |   |-- NoteCard.jsx
+|   |   |   |-- ProtectedRoute.jsx
+|   |   |   `-- ...other components
 |   |   |-- lib/
 |   |   |-- pages/
 |   |   |-- App.jsx
@@ -179,11 +186,26 @@ Authorization: Bearer <jwt_token>
 ## Frontend Routes
 
 - `/` Home (protected)
-- `/create` Create note (protected)
-- `/note/:id` Note detail/edit (protected)
+- `/create` Create note with optional drawing (protected)
+- `/note/:id` Note detail/edit with drawing support (protected)
 - `/settings` Account + feedback (protected)
 - `/login`
 - `/signup`
+
+## Tldraw Drawing Feature
+
+The application integrates **Tldraw**, a web-based drawing application, for visual note-taking:
+
+- **Create notes with drawings**: Use the drawing editor in the Create page to draw and annotate notes
+- **Edit drawings**: Load and modify existing drawings when editing notes
+- **Drawing snapshots**: All drawings are stored as JSON snapshots attached to note content
+- **Persistent storage**: Drawing data is saved with the note in MongoDB
+
+Usage:
+- Navigate to `/create` to start a new note with drawing
+- Use the Tldraw toolbar for drawing shapes, text, and other elements
+- Click "Save" button to save your drawing
+- Edit existing notes to view and modify drawings
 
 ## Database Models
 

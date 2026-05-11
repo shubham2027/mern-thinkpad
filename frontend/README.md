@@ -1,16 +1,89 @@
-# React + Vite
+# MERN Thinkpad Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React-based frontend for a full-stack note-taking application with integrated drawing capabilities.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- User authentication (JWT + Google OAuth)
+- Create, read, update, delete notes
+- Integrated drawing editor with Tldraw
+- Search and filter notes
+- Pin/unpin notes
+- Responsive UI with Tailwind CSS + DaisyUI
+- Real-time toast notifications
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React 19
+- Vite (build tool)
+- React Router (routing)
+- Axios (HTTP client)
+- Tailwind CSS + DaisyUI (styling)
+- Tldraw (drawing editor)
+- React Hot Toast (notifications)
+- @react-oauth/google (Google Sign-In)
 
-## Expanding the ESLint configuration
+## Setup
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm install
+```
+
+### Environment Variables
+
+Create `.env.local` in the frontend directory:
+
+```env
+VITE_GOOGLE_CLIENT_ID=your_google_oauth_client_id
+VITE_WEB3FORMS_ACCESS_KEY=your_web3forms_access_key
+```
+
+## Development
+
+```bash
+npm run dev
+```
+
+The app will start at `http://localhost:5173`
+
+## Build
+
+```bash
+npm run build
+```
+
+## Project Structure
+
+```
+src/
+├── components/      # Reusable React components
+│   ├── TldrawEditor.jsx
+│   ├── NoteCard.jsx
+│   ├── ProtectedRoute.jsx
+│   └── ...
+├── pages/          # Page components
+│   ├── Create.jsx
+│   ├── Home.jsx
+│   ├── NoteDetail.jsx
+│   └── ...
+├── lib/            # Utilities and helpers
+│   ├── axios.js
+│   ├── auth.js
+│   └── googleAuth.js
+├── App.jsx
+└── main.jsx
+```
+
+## Key Components
+
+- **TldrawEditor**: Integrated drawing editor for visual note-taking
+- **ProtectedRoute**: Route guard for authenticated pages
+- **NoteCard**: Individual note display component
+- **Navbar**: Navigation and user menu
+
+## Authentication
+
+- Email/password login
+- Google Sign-In
+- JWT token stored in localStorage
+- Automatic token attachment to API requests via Axios interceptor

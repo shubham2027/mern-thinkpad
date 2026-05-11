@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLocation, useNavigate } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { LogOutIcon, PlusIcon, SettingsIcon, UserCircle2Icon } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { removeToken } from '../lib/auth';

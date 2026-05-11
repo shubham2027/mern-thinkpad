@@ -52,39 +52,64 @@ export async function getNoteById(req, res) {
 
 export async function createNote(req, res) {
   try {
-    const { title, content } = req.body;
-
-    if (!title?.trim() || !content?.trim()) {
-      return res.status(400).json({ message: "Title and content are required" });
+    const { title, content, drawingData, noteType = "text" } = req.body;
+    const normalizedDrawingData =
+      noteType === "drawing"
+        ? typeof drawingData === "string"
+          ? drawingData
+          : drawingData != null
+            ? JSON.stringify(drawingData)
+            : null
+        : null;
+    
+    // Validate based on type
+    if (noteType === "text" && (!title?.trim() || !content?.trim())) {
+      return res.status(400).json({ message: "Title and content required for text notes" });
+    }
+    
+    if (noteType === "drawing" && !title?.trim()) {
+      return res.status(400).json({ message: "Title required for drawings" });
     }
 
-    // [AUTH-EDIT-3] store owner id on create
     const note = new Note({
       userId: req.user.id,
       title,
-      content
+      content: noteType === "text" ? content : "",
+      drawingData: normalizedDrawingData,
+      noteType
     });
 
     const savedNote = await note.save();
     res.status(201).json(savedNote);
   } catch (error) {
-    console.error("Error in createNote Controller: ", error)
-    res.status(500).json({ message: "Internal server error" } );
+    console.error("Error in createNote:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 }
 
+
 export async function updateNote(req, res) {
   try {
-    const { title, content } = req.body;
+    const { title, content, drawingData, noteType } = req.body;
 
-    if (!title?.trim() || !content?.trim()) {
-      return res.status(400).json({ message: "Title and content are required" });
-    }
+    const updateData = {
+      title: title || undefined,
+      noteType: noteType || undefined
+    };
 
-    // [AUTH-EDIT-4] update only if owned by current user
+   if (content !== undefined) updateData.content = content;
+   if (drawingData !== undefined) {
+     updateData.drawingData =
+       typeof drawingData === "string"
+         ? drawingData
+         : drawingData != null
+           ? JSON.stringify(drawingData)
+           : null;
+   }
+
     const updatedNote = await Note.findOneAndUpdate(
       { _id: req.params.id, userId: req.user.id },
-      { title, content },
+      { $set: updateData },
       { new: true, runValidators: true }
     );
 
@@ -94,11 +119,10 @@ export async function updateNote(req, res) {
 
     res.status(200).json(updatedNote);
   } catch (error) {
-    console.error("Error in updateNote Controller: ", error)
-    res.status(500).json({ message: "Internal server error" } );
+    console.error("Error in updateNote:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
-}   
-
+}
 
 export async function deleteNote(req, res) {
   try {

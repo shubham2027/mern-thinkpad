@@ -1,14 +1,16 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router";
+import { useEffect, useRef, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import api from "../lib/axios";
 import toast from "react-hot-toast";
 import { ArrowLeftIcon, LoaderIcon, Trash2Icon } from "lucide-react";
 import Navbar from "../components/Navbar";
+import { TldrawEditor } from "../components/TldrawEditor";
 
 const NoteDetail = () => {
   const [note, setNote] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const drawingEditorRef = useRef(null);
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -43,15 +45,31 @@ const NoteDetail = () => {
   };
 
   const handleSave = async () => {
-    if (!note.title.trim() || !note.content.trim()) {
-      toast.error("Please add a title or content");
+    const isText = note.noteType === "text";
+    const latestDrawingData =
+      note.noteType === "drawing"
+        ? drawingEditorRef.current?.getSnapshotData?.() || note.drawingData || null
+        : null;
+
+    if (!note.title?.trim()) {
+      toast.error("Please add a title");
+      return;
+    }
+
+    if (isText && !note.content?.trim()) {
+      toast.error("Please add content");
       return;
     }
 
     setSaving(true);
 
     try {
-      await api.put(`/notes/${id}`, note);
+      const payload = {
+        ...note,
+        drawingData: latestDrawingData
+      };
+
+      await api.put(`/notes/${id}`, payload);
       toast.success("Note updated successfully");
       navigate("/");
     } catch (error) {
@@ -119,12 +137,23 @@ const NoteDetail = () => {
                 <label className="label">
                   <span className="label-text">Content</span>
                 </label>
-                <textarea
-                  placeholder="Write your note here..."
-                  className="textarea textarea-bordered h-32 w-full"
-                  value={note.content}
-                  onChange={(e) => setNote({ ...note, content: e.target.value })}
-                />
+                {note.noteType === "text" ? (
+                  <textarea
+                    className="textarea textarea-bordered w-full"
+                    placeholder="Write your note here..."
+                    value={note.content}
+                    onChange={(e) => setNote({ ...note, content: e.target.value })}
+                  />
+                ) : (
+                  <TldrawEditor 
+                    ref={drawingEditorRef}
+                    initialData={note.drawingData}
+                    onSave={(data) => {
+                      if (data === undefined) return;
+                      setNote({ ...note, drawingData: data });
+                    }}
+                  />
+                )}
               </div>
 
               <div className="card-actions justify-end">

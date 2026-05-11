@@ -205,7 +205,7 @@ Usage:
 - Navigate to `/create` to start a new note with drawing
 - Use the Tldraw toolbar for drawing shapes, text, and other elements
 - Click "Save" button to save your drawing
-- Edit existing notes to view and modify drawings
+- Edit existing notes to view and modify drawings.
 
 ## Database Models
 

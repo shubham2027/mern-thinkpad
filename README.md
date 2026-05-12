@@ -8,13 +8,13 @@ Full-stack note-taking app built with MongoDB, Express, React, and Node.js.
 - Search notes by words in title/content
 - Pin/unpin notes and keep pinned notes on top
 - Notes filter (All, Pinned, Unpinned)
-- Integrated Tldraw drawing editor for visual note-taking
+- Integrated Excalidraw drawing editor for visual note-taking
 - Save and load drawing snapshots with notes
 - JWT auth (email/password)
 - Google Sign-In auth
 - Protected frontend routes
 - Axios auth interceptor with auto Bearer token
-- Settings page with profile details
+- Account Settings page with profile details
 - Feedback form integration using Web3Forms
 - Upstash Redis rate limiting
 - Tailwind + DaisyUI UI
@@ -28,9 +28,11 @@ Full-stack note-taking app built with MongoDB, Express, React, and Node.js.
 - React Router
 - Axios
 - React Hot Toast
-- Tailwind CSS + DaisyUI
+- Tailwind CSS 4 + DaisyUI 5
+- GSAP (Animations)
+- Three.js / React Three Fiber / OGL (3D Graphics)
 - @react-oauth/google
-- Tldraw (drawing editor)
+- Excalidraw (drawing editor)
 - Web3Forms (HTTP API integration)
 
 ### Backend
@@ -58,7 +60,7 @@ mern-thinkpad/
 |-- frontend/
 |   |-- src/
 |   |   |-- components/
-|   |   |   |-- TldrawEditor.jsx
+|   |   |   |-- ExcalidrawEditor.jsx
 |   |   |   |-- NoteCard.jsx
 |   |   |   |-- ProtectedRoute.jsx
 |   |   |   `-- ...other components
@@ -167,7 +169,7 @@ npm run start
 
 - POST /api/feedback
 
-Note: Settings page feedback is sent directly from frontend to Web3Forms. The backend feedback endpoint is available and stores feedback records.
+Note: Account Settings page feedback is sent directly from frontend to Web3Forms. The backend feedback endpoint is available and stores feedback records.
 
 Protected routes require:
 
@@ -188,13 +190,13 @@ Authorization: Bearer <jwt_token>
 - `/` Home (protected)
 - `/create` Create note with optional drawing (protected)
 - `/note/:id` Note detail/edit with drawing support (protected)
-- `/settings` Account + feedback (protected)
+- `/settings` Account Settings + feedback (protected)
 - `/login`
 - `/signup`
 
-## Tldraw Drawing Feature
+## Excalidraw Drawing Feature
 
-The application integrates **Tldraw**, a web-based drawing application, for visual note-taking:
+The application integrates **Excalidraw**, a web-based drawing application, for visual note-taking:
 
 - **Create notes with drawings**: Use the drawing editor in the Create page to draw and annotate notes
 - **Edit drawings**: Load and modify existing drawings when editing notes
@@ -203,7 +205,7 @@ The application integrates **Tldraw**, a web-based drawing application, for visu
 
 Usage:
 - Navigate to `/create` to start a new note with drawing
-- Use the Tldraw toolbar for drawing shapes, text, and other elements
+- Use the Excalidraw toolbar for drawing shapes, text, and other elements
 - Click "Save" button to save your drawing
 - Edit existing notes to view and modify drawings.
 

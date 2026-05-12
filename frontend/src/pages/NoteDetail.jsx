@@ -4,7 +4,7 @@ import api from "../lib/axios";
 import toast from "react-hot-toast";
 import { ArrowLeftIcon, LoaderIcon, Trash2Icon } from "lucide-react";
 import Navbar from "../components/Navbar";
-import { TldrawEditor } from "../components/TldrawEditor";
+import { ExcalidrawEditor } from "../components/ExcalidrawEditor";
 
 const NoteDetail = () => {
   const [note, setNote] = useState(null);
@@ -145,7 +145,7 @@ const NoteDetail = () => {
                     onChange={(e) => setNote({ ...note, content: e.target.value })}
                   />
                 ) : (
-                  <TldrawEditor 
+                  <ExcalidrawEditor 
                     ref={drawingEditorRef}
                     initialData={note.drawingData}
                     onSave={(data) => {

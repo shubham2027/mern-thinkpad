@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import api from "../lib/axios";
 import Navbar from "../components/Navbar";
-import { TldrawEditor } from "../components/TldrawEditor";
+import { ExcalidrawEditor } from "../components/ExcalidrawEditor";
 
 const Create = () => {
   const [noteType, setNoteType] = useState("text"); // "text" or "drawing"
@@ -114,7 +114,7 @@ const Create = () => {
                   <label className="label">
                     <span className="label-text">Create Drawing</span>
                   </label>
-                  <TldrawEditor 
+                  <ExcalidrawEditor 
                     ref={drawingEditorRef}
                     onSave={(data) => setDrawingData(data)}
                   />

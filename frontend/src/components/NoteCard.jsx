@@ -58,10 +58,10 @@ const NoteCard = ({note, setNotes}) => {
         className='card bg-base-100 hover:shadow-lg transition-all duration-200 border-t-4 border-solid border-[#00FF9D] bg-base-100/80 backdrop-blur-md shadow-lg'
     >
         <div className='card-body '>
-                        <div className="flex items-start justify-between w-full">
-                            <h3 className='card-title text-base-content'>{note.title}</h3>
+                        <div className="flex items-start justify-between w-full gap-2">
+                            <h3 className='card-title text-base-content text-lg md:text-xl'>{note.title}</h3>
                             {note.noteType === 'drawing' && (
-                                <span className='badge badge-info text-xs normal-case'>Drawing</span>
+                                <span className='badge badge-info text-xs normal-case whitespace-nowrap'>Drawing</span>
                             )}
                         </div>
 

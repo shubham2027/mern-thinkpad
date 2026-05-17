@@ -8,6 +8,9 @@ Full-stack note-taking app built with MongoDB, Express, React, and Node.js.
 - Search notes by words in title/content
 - Pin/unpin notes and keep pinned notes on top
 - Notes filter (All, Pinned, Unpinned)
+- Dark Luxury UI with glassmorphism and ambient background gradients
+- Fully responsive layout for mobile and desktop screens
+- Toggle between Text notes and Drawing notes
 - Integrated Excalidraw drawing editor for visual note-taking
 - Save and load drawing snapshots with notes
 - JWT auth (email/password)
@@ -15,7 +18,7 @@ Full-stack note-taking app built with MongoDB, Express, React, and Node.js.
 - Protected frontend routes
 - Axios auth interceptor with auto Bearer token
 - Account Settings page with profile details
-- Feedback form integration using Web3Forms
+- Feedback form in Account Settings (currently simulated)
 - Upstash Redis rate limiting
 - Tailwind + DaisyUI UI
 
@@ -95,10 +98,7 @@ FRONTEND_URL=http://localhost:5173
 
 ```env
 VITE_GOOGLE_CLIENT_ID=your_google_oauth_client_id
-VITE_WEB3FORMS_ACCESS_KEY=your_web3forms_access_key
 ```
-
-Note: If `VITE_WEB3FORMS_ACCESS_KEY` is not set, the app currently falls back to an in-code Web3Forms key in the settings page.
 
 ## Local Development
 
@@ -169,7 +169,7 @@ npm run start
 
 - POST /api/feedback
 
-Note: Account Settings page feedback is sent directly from frontend to Web3Forms. The backend feedback endpoint is available and stores feedback records.
+Note: Account Settings page feedback is currently simulated in the frontend to avoid strict Antivirus blocking false positives. The backend feedback endpoint is available for future integration.
 
 Protected routes require:
 
@@ -223,7 +223,9 @@ Usage:
 
 - userId (ObjectId ref User, required)
 - title (required)
-- content (required)
+- noteType (enum: 'text', 'drawing', default 'text')
+- content (string, optional, used for text notes)
+- drawingData (object, optional, used for drawing notes)
 - pinned (boolean, default `false`)
 
 ### Feedback

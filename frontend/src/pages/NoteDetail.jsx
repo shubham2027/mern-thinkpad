@@ -107,12 +107,12 @@ const NoteDetail = () => {
 
       <div className="relative z-10 container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
-          <div className="flex items-center justify-between mb-6">
-            <Link to="/" className="btn btn-ghost">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between mb-6 gap-3">
+            <Link to="/" className="btn btn-ghost w-full sm:w-auto justify-start sm:justify-center">
               <ArrowLeftIcon className="h-5 w-5" />
               Back to Notes
             </Link>
-            <button onClick={handleDelete} className="btn btn-error btn-outline">
+            <button onClick={handleDelete} className="btn btn-error btn-outline w-full sm:w-auto">
               <Trash2Icon className="h-5 w-5" />
               Delete Note
             </button>

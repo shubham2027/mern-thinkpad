@@ -65,16 +65,16 @@ const Create = () => {
               <h2 className="card-title">Create a note</h2>
 
               {/* Note Type Selector */}
-              <div className="flex gap-4 mb-4">
+              <div className="flex gap-2 mb-4">
                 <button
                   onClick={() => setNoteType("text")}
-                  className={`btn ${noteType === "text" ? "btn-primary" : "btn-outline"}`}
+                  className={`btn flex-1 ${noteType === "text" ? "btn-primary" : "btn-outline"}`}
                 >
                   Text Note
                 </button>
                 <button
                   onClick={() => setNoteType("drawing")}
-                  className={`btn ${noteType === "drawing" ? "btn-primary" : "btn-outline"}`}
+                  className={`btn flex-1 ${noteType === "drawing" ? "btn-primary" : "btn-outline"}`}
                 >
                   Drawing
                 </button>

@@ -6,6 +6,7 @@ Full-stack note-taking app built with MongoDB, Express, React, and Node.js.
 
 - Notes CRUD with per-user ownership
 - Search notes by words in title/content
+- Text notes and drawing notes powered by Excalidraw
 - Pin/unpin notes and keep pinned notes on top
 - Notes filter (All, Pinned, Unpinned)
 - JWT auth (email/password)
@@ -172,15 +173,15 @@ Authorization: Bearer <jwt_token>
 
 - Email/password auth issues a JWT token valid for 7 days
 - Google Sign-In verifies Google ID token on backend and returns app JWT
-- Token is stored in localStorage (mindscribe_token)
+- Token is stored in localStorage under `mindscribe_token`
 - Axios adds Authorization header automatically
 - On 401, frontend logs out and redirects to /login (except on auth pages)
 
 ## Frontend Routes
 
 - `/` Home (protected)
-- `/create` Create note (protected)
-- `/note/:id` Note detail/edit (protected)
+- `/create` Create a text note or drawing note (protected)
+- `/note/:id` Note detail/edit, including drawing restoration for drawing notes (protected)
 - `/settings` Account + feedback (protected)
 - `/login`
 - `/signup`
@@ -199,7 +200,9 @@ Authorization: Bearer <jwt_token>
 
 - userId (ObjectId ref User, required)
 - title (required)
-- content (required)
+- content (stored for text notes)
+- drawingData (JSON string stored for drawing notes)
+- noteType (`text` or `drawing`)
 - pinned (boolean, default `false`)
 
 ### Feedback

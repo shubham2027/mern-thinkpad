@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 import { PenSquareIcon, PinIcon } from 'lucide-react';
 import { Trash2Icon } from 'lucide-react';
 import api from '../lib/axios';
@@ -58,8 +58,20 @@ const NoteCard = ({note, setNotes}) => {
         className='card bg-base-100 hover:shadow-lg transition-all duration-200 border-t-4 border-solid border-[#00FF9D] bg-base-100/80 backdrop-blur-md shadow-lg'
     >
         <div className='card-body '>
-            <h3 className='card-title text-base-content'>{note.title}</h3>
-            <p className='text-base-content/70 line-clamp-3'>{note.content}</p>
+                        <div className="flex items-start justify-between w-full gap-2">
+                            <h3 className='card-title text-base-content text-lg md:text-xl'>{note.title}</h3>
+                            {note.noteType === 'drawing' && (
+                                <span className='badge badge-info text-xs normal-case whitespace-nowrap'>Drawing</span>
+                            )}
+                        </div>
+
+                        {note.noteType === 'text' ? (
+                            <p className='text-base-content/70 line-clamp-3'>{note.content}</p>
+                        ) : (
+                            <div className='w-full h-24 rounded-md bg-base-200/40 flex items-center justify-center text-sm text-base-content/60'>
+                                {note.drawingData ? 'Drawing — click to open' : 'Empty drawing'}
+                            </div>
+                        )}
 
             <div className='card-actions justify-between items-center mt-4'>
                 <span className='text-sm text-base-content/60'>

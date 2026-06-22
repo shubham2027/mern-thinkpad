@@ -9,12 +9,17 @@ Full-stack note-taking app built with MongoDB, Express, React, and Node.js.
 - Text notes and drawing notes powered by Excalidraw
 - Pin/unpin notes and keep pinned notes on top
 - Notes filter (All, Pinned, Unpinned)
+- Dark Luxury UI with glassmorphism and ambient background gradients
+- Fully responsive layout for mobile and desktop screens
+- Toggle between Text notes and Drawing notes
+- Integrated Excalidraw drawing editor for visual note-taking
+- Save and load drawing snapshots with notes
 - JWT auth (email/password)
 - Google Sign-In auth
 - Protected frontend routes
 - Axios auth interceptor with auto Bearer token
-- Settings page with profile details
-- Feedback form integration using Web3Forms
+- Account Settings page with profile details
+- Feedback form in Account Settings (currently simulated)
 - Upstash Redis rate limiting
 - Tailwind + DaisyUI UI
 
@@ -27,8 +32,11 @@ Full-stack note-taking app built with MongoDB, Express, React, and Node.js.
 - React Router
 - Axios
 - React Hot Toast
-- Tailwind CSS + DaisyUI
+- Tailwind CSS 4 + DaisyUI 5
+- GSAP (Animations)
+- Three.js / React Three Fiber / OGL (3D Graphics)
 - @react-oauth/google
+- Excalidraw (drawing editor)
 - Web3Forms (HTTP API integration)
 
 ### Backend
@@ -56,6 +64,10 @@ mern-thinkpad/
 |-- frontend/
 |   |-- src/
 |   |   |-- components/
+|   |   |   |-- ExcalidrawEditor.jsx
+|   |   |   |-- NoteCard.jsx
+|   |   |   |-- ProtectedRoute.jsx
+|   |   |   `-- ...other components
 |   |   |-- lib/
 |   |   |-- pages/
 |   |   |-- App.jsx
@@ -87,10 +99,7 @@ FRONTEND_URL=http://localhost:5173
 
 ```env
 VITE_GOOGLE_CLIENT_ID=your_google_oauth_client_id
-VITE_WEB3FORMS_ACCESS_KEY=your_web3forms_access_key
 ```
-
-Note: If `VITE_WEB3FORMS_ACCESS_KEY` is not set, the app currently falls back to an in-code Web3Forms key in the settings page.
 
 ## Local Development
 
@@ -161,7 +170,7 @@ npm run start
 
 - POST /api/feedback
 
-Note: Settings page feedback is sent directly from frontend to Web3Forms. The backend feedback endpoint is available and stores feedback records.
+Note: Account Settings page feedback is currently simulated in the frontend to avoid strict Antivirus blocking false positives. The backend feedback endpoint is available for future integration.
 
 Protected routes require:
 
@@ -180,11 +189,32 @@ Authorization: Bearer <jwt_token>
 ## Frontend Routes
 
 - `/` Home (protected)
+<<<<<<< HEAD
 - `/create` Create a text note or drawing note (protected)
 - `/note/:id` Note detail/edit, including drawing restoration for drawing notes (protected)
 - `/settings` Account + feedback (protected)
+=======
+- `/create` Create note with optional drawing (protected)
+- `/note/:id` Note detail/edit with drawing support (protected)
+- `/settings` Account Settings + feedback (protected)
+>>>>>>> 91e327d3112e85a24f810de244e4ff01087e3a0b
 - `/login`
 - `/signup`
+
+## Excalidraw Drawing Feature
+
+The application integrates **Excalidraw**, a web-based drawing application, for visual note-taking:
+
+- **Create notes with drawings**: Use the drawing editor in the Create page to draw and annotate notes
+- **Edit drawings**: Load and modify existing drawings when editing notes
+- **Drawing snapshots**: All drawings are stored as JSON snapshots attached to note content
+- **Persistent storage**: Drawing data is saved with the note in MongoDB
+
+Usage:
+- Navigate to `/create` to start a new note with drawing
+- Use the Excalidraw toolbar for drawing shapes, text, and other elements
+- Click "Save" button to save your drawing
+- Edit existing notes to view and modify drawings.
 
 ## Database Models
 
@@ -200,9 +230,15 @@ Authorization: Bearer <jwt_token>
 
 - userId (ObjectId ref User, required)
 - title (required)
+<<<<<<< HEAD
 - content (stored for text notes)
 - drawingData (JSON string stored for drawing notes)
 - noteType (`text` or `drawing`)
+=======
+- noteType (enum: 'text', 'drawing', default 'text')
+- content (string, optional, used for text notes)
+- drawingData (object, optional, used for drawing notes)
+>>>>>>> 91e327d3112e85a24f810de244e4ff01087e3a0b
 - pinned (boolean, default `false`)
 
 ### Feedback

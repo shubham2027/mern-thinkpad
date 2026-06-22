@@ -1,4 +1,4 @@
-import { Route, Routes, Navigate } from "react-router";
+import { Route, Routes, Navigate } from "react-router-dom";
 import React from "react";
 
 import Home from "./pages/Home.jsx";
@@ -6,22 +6,12 @@ import Create from "./pages/Create.jsx";
 import NoteDetail from "./pages/NoteDetail.jsx";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
-import Settings from "./pages/Settings.jsx";
+import AccountSettings from "./pages/AccountSettings.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
-import TargetCursor from "./components/TargetCursor.jsx";
 
 const App = () => {
   return (
     <div className="relative min-h-screen w-full isolate" data-theme="forest">
-      
-      <TargetCursor
-        targetSelector="button, a, .cursor-target"
-        spinDuration={2}
-        hideDefaultCursor
-        parallaxOn
-        hoverDuration={0.2}
-      />
-
       <div className="relative z-10">
         <Routes>
           <Route path="/login" element={<Login />} />
@@ -55,7 +45,7 @@ const App = () => {
             path="/settings"
             element={
               <ProtectedRoute>
-                <Settings />
+                <AccountSettings />
               </ProtectedRoute>
             }
           />

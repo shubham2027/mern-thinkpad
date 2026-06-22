@@ -17,8 +17,15 @@ const noteSchema = new mongoose.Schema(
         },
         content:{
             type: String,
-            required: true
+            default: ""
         },
+         drawingData: { 
+            type: String, default: null 
+        }, // Store tldraw snapshot as JSON string
+        noteType: { 
+            type: String, enum: ["text", "drawing"], 
+            default: "text" 
+        }, // Differentiate note types
         pinned: {
             type: Boolean,
             default: false

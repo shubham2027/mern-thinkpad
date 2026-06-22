@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLocation, useNavigate } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { LogOutIcon, PlusIcon, SettingsIcon, UserCircle2Icon } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { removeToken } from '../lib/auth';
@@ -19,13 +19,13 @@ const Navbar = () => {
     <header className='relative z-50 bg-base-300 boder-b border-base-content/10'>
       <div className='mx-auto max-w-6xl p-4'>
         <div className='flex items-center justify-between'>
-          <h1 className='text-3xl font-bold text-primary font-mono tracking-tighter'>Mindscribe</h1>
+          <h1 className='text-2xl md:text-3xl font-bold text-primary font-mono tracking-tighter'>Mindscribe</h1>
 
           <div className='flex items-center gap-2'>
             {/* [AUTH-EDIT-2] avoid showing create button on create page */}
             {location.pathname !== "/create" && (
-              <Link to={"/create"} className='btn btn-primary'>
-                <PlusIcon className='size-5' /> New Note
+              <Link to={"/create"} className='btn btn-primary btn-sm md:btn-md'>
+                <PlusIcon className='size-4 md:size-5' /> <span className='hidden sm:inline'>New Note</span>
               </Link>
             )}
 

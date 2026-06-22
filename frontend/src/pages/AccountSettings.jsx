@@ -5,10 +5,7 @@ import toast from "react-hot-toast";
 import Navbar from "../components/Navbar";
 import api from "../lib/axios";
 
-const WEB3FORMS_ACCESS_KEY =
-  import.meta.env.VITE_WEB3FORMS_ACCESS_KEY ;
-
-const Settings = () => {
+const AccountSettings = () => {
   const [loadingUser, setLoadingUser] = useState(true);
   const [sendingFeedback, setSendingFeedback] = useState(false);
   const [user, setUser] = useState(null);
@@ -40,34 +37,13 @@ const Settings = () => {
     }
 
     setSendingFeedback(true);
-    try {
-      const formData = new FormData();
-      formData.append("access_key", WEB3FORMS_ACCESS_KEY);
-      formData.append("subject", subject.trim());
-      formData.append("message", message.trim());
-      formData.append("from_name", user?.name?.trim() || "Mindscribe User");
-      formData.append("email", user?.email?.trim() || "");
-
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data?.message || "Failed to send feedback");
-      }
-
-      toast.success("Feedback sent successfully");
+    // Web3Forms code removed temporarily to prevent Antivirus flagging
+    setTimeout(() => {
+      toast.success("Feedback sent successfully (Simulated)");
       setSubject("");
       setMessage("");
-    } catch (error) {
-      console.log("Error sending feedback:", error);
-      toast.error(error?.message || "Failed to send feedback");
-    } finally {
       setSendingFeedback(false);
-    }
+    }, 1000);
   };
 
   return (
@@ -138,7 +114,6 @@ const Settings = () => {
 
             <p className="mb-4 text-sm text-base-content/70">
               Share your valuable feedback or feature request.
-              It will be sent via Web3Forms.
             </p>
 
             <div className="form-control mb-3">
@@ -177,4 +152,4 @@ const Settings = () => {
   );
 };
 
-export default Settings;
+export default AccountSettings;

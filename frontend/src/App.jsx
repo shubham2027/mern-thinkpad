@@ -11,7 +11,7 @@ import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 const App = () => {
   return (
-    <div className="relative min-h-screen w-full isolate" data-theme="forest">
+    <div className="relative min-h-screen w-full isolate font-sans text-on-background bg-background selection:bg-primary/30">
       <div className="relative z-10">
         <Routes>
           <Route path="/login" element={<Login />} />

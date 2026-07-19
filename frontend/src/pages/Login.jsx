@@ -1,15 +1,18 @@
 import React, { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
 import toast from "react-hot-toast";
+import { Eye, EyeOff, Mail, Lock, ArrowRight, Loader2 } from "lucide-react";
 import api from "../lib/axios";
 import { isAuthenticated, setToken } from "../lib/auth";
 import { handleGoogleCredential } from "../lib/googleAuth";
+import AuthLayout from "../components/AuthLayout";
 
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
   if (isAuthenticated()) {
@@ -40,7 +43,6 @@ const Login = () => {
 
   const onGoogleSuccess = async (credentialResponse) => {
     console.log("Google response:", credentialResponse);
-    console.log("Credential:", credentialResponse?.credential);
     const result = await handleGoogleCredential(credentialResponse);
     if (!result.success) {
       toast.error(result.message);
@@ -51,63 +53,105 @@ const Login = () => {
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden flex items-center justify-center px-4">
-      <div className="pointer-events-none absolute inset-0 -z-0">
-        <div className="absolute -top-20 -left-20 h-72 w-72 rounded-full bg-emerald-400/25 blur-3xl" />
-        <div className="absolute top-1/3 right-10 h-80 w-80 rounded-full bg-green-300/20 blur-3xl" />
-        <div className="absolute -bottom-24 left-1/3 h-72 w-72 rounded-full bg-emerald-300/20 blur-3xl" />
-      </div>
-
-      <div className="relative z-10 w-full max-w-md">
-        <h1 className="mb-4 text-center text-3xl font-bold tracking-tighter text-primary font-mono">
-          Mindscribe
-        </h1>
-        <div className="card w-full border border-white/15 bg-base-100/35 shadow-[0_8px_50px_rgba(16,185,129,0.15)] backdrop-blur-xl">
-          <div className="card-body gap-4">
-            <h2 className="card-title text-2xl">Sign in</h2>
-
-            <div className="form-control">
-              <label className="label"><span className="label-text">Email</span></label>
+    <AuthLayout
+      title="Welcome back"
+      subtitle="Sign in to your Mindscribe workspace to access your notes & canvas."
+      switchText="New to Mindscribe?"
+      switchLinkText="Create an account"
+      switchLinkTo="/signup"
+    >
+      <div className="bg-ink/90 border border-outline/70 rounded-2xl key-shadow p-6 sm:p-8 w-full backdrop-blur-xl">
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Email Input */}
+          <div className="flex flex-col gap-1.5">
+            <label className="font-mono text-[11px] text-smoke uppercase tracking-wider px-1 flex items-center gap-1.5">
+              <Mail className="w-3 h-3 text-primary" />
+              <span>Email Address</span>
+            </label>
+            <div className="relative group">
               <input
                 type="email"
-                className="input input-bordered w-full"
                 placeholder="you@example.com"
+                className="bg-obsidian/80 border border-outline/80 rounded-xl px-4 py-3 text-pure-white font-sans text-sm focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all w-full placeholder:text-ash/30"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
+          </div>
 
-            <div className="form-control">
-              <label className="label"><span className="label-text">Password</span></label>
+          {/* Password Input */}
+          <div className="flex flex-col gap-1.5">
+            <div className="flex items-center justify-between px-1">
+              <label className="font-mono text-[11px] text-smoke uppercase tracking-wider flex items-center gap-1.5">
+                <Lock className="w-3 h-3 text-primary" />
+                <span>Password</span>
+              </label>
+            </div>
+            <div className="relative group">
               <input
-                type="password"
-                className="input input-bordered w-full"
+                type={showPassword ? "text" : "password"}
                 placeholder="••••••••"
+                className="bg-obsidian/80 border border-outline/80 rounded-xl pl-4 pr-11 py-3 text-pure-white font-sans text-sm focus:ring-2 focus:ring-primary/40 focus:border-primary outline-none transition-all w-full placeholder:text-ash/30"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-ash hover:text-pure-white transition-colors cursor-pointer p-1"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? (
+                  <EyeOff className="w-4 h-4 text-primary" />
+                ) : (
+                  <Eye className="w-4 h-4" />
+                )}
+              </button>
             </div>
-
-            <button className="btn btn-primary mt-2" onClick={handleSubmit} disabled={loading}>
-              {loading ? "Signing in..." : "Sign in"}
-            </button>
-
-            <div className="divider">OR</div>
-
-            <div className="flex justify-center">
-              <GoogleLogin
-                onSuccess={onGoogleSuccess}
-                onError={() => toast.error("Google sign in failed")}
-              />
-            </div>
-
-            <p className="text-sm text-base-content/70">
-              New here? <Link to="/signup" className="link link-primary">Create an account</Link>
-            </p>
           </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full mt-2 bg-gradient-to-r from-primary via-coral-pulse to-primary hover:opacity-95 text-pure-white px-5 py-3 rounded-xl font-sans text-sm font-medium transition-all duration-200 cursor-pointer shadow-[0_0_20px_rgba(255,99,99,0.3)] active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2 group"
+          >
+            {loading ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                <span>Signing in...</span>
+              </>
+            ) : (
+              <>
+                <span>Sign in to Workspace</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </>
+            )}
+          </button>
+        </form>
+
+        {/* Divider */}
+        <div className="relative my-6 flex items-center justify-center">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-outline/40" />
+          </div>
+          <span className="relative bg-ink px-3 font-mono text-[10px] text-smoke uppercase tracking-widest">
+            OR CONTINUE WITH
+          </span>
+        </div>
+
+        {/* Google OAuth */}
+        <div className="flex justify-center select-none rounded-xl overflow-hidden p-1 bg-obsidian border border-outline/60 hover:border-outline transition-colors">
+          <GoogleLogin
+            onSuccess={onGoogleSuccess}
+            onError={() => toast.error("Google sign in failed")}
+            theme="filled_black"
+            shape="pill"
+            width="100%"
+          />
         </div>
       </div>
-    </div>
+    </AuthLayout>
   );
 };
 

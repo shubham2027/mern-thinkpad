@@ -2,3 +2,127 @@
 @plugin "daisyui"{
     themes: "forest", "coffee";
 }
+
+@theme {
+  /* Raycast Original Colors */
+  --color-void-black: #040506;
+  --color-ink: #07080a;
+  --color-obsidian: #111214;
+  --color-graphite: #1b1c1e;
+  --color-smoke: #6a6b6c;
+  --color-ash: #9c9c9d;
+  --color-mist: #e6e6e6;
+  --color-iron: #454647;
+  --color-slate: #2f3031;
+  --color-pure-white: #ffffff;
+  --color-coral-pulse: #ff6363;
+  --color-ember-hush: #452324;
+  --color-electric-sky: #63a1ff;
+  --color-cobalt-edge: #143ca3;
+  --color-deep-space: #02193b;
+  --color-info-blue: #56c2ff;
+  --color-success-green: #59d499;
+
+  /* Theme Mappings & Aliases */
+  --color-primary: #ff6363;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #452324;
+  --color-on-primary-container: #ff6363;
+  --color-background: #040506;
+  --color-on-background: #e6e6e6;
+  --color-secondary: #9c9c9d;
+  --color-outline: #363739;
+  --color-outline-variant: #363739;
+  --color-surface: #07080a;
+  --color-surface-dim: #040506;
+  --color-surface-bright: #111214;
+  --color-surface-container-lowest: #040506;
+  --color-surface-container-low: #07080a;
+  --color-surface-container: #07080a;
+  --color-surface-container-high: #111214;
+  --color-surface-container-highest: #1b1c1e;
+  --color-accent-coral: #ff6363;
+  --color-surface-ink: #07080a;
+  --color-recessed-obsidian: #111214;
+  --color-action-mist: #e6e6e6;
+  --color-error: #ff6363;
+
+  /* Typography */
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-label-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Spacing */
+  --spacing-8: 8px;
+  --spacing-16: 16px;
+  --spacing-24: 24px;
+  --spacing-32: 32px;
+  --spacing-40: 40px;
+  --spacing-48: 48px;
+  --spacing-56: 56px;
+  --spacing-64: 64px;
+  --spacing-80: 80px;
+  --spacing-96: 96px;
+  --spacing-120: 120px;
+  --spacing-224: 224px;
+
+  /* Radii */
+  --radius-cards: 16px;
+  --radius-pills: 9999px;
+  --radius-badges: 6px;
+  --radius-inputs: 8px;
+  --radius-buttons: 8px;
+  --radius-largecards: 20px;
+  --radius-iconcontainers: 99999px;
+}
+
+@utility key-shadow {
+  box-shadow: rgba(255, 255, 255, 0.05) 0px 1px 0px 0px inset,
+              rgba(255, 255, 255, 0.25) 0px 0px 0px 1px,
+              rgba(0, 0, 0, 0.2) 0px -1px 0px 0px inset;
+}
+
+@utility dot-grid {
+  background-image: radial-gradient(#1b1c1e 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+@utility hero-glow {
+  background: radial-gradient(circle at center, rgba(4, 63, 150, 0.4) 0%, rgba(4, 5, 6, 0) 70%);
+  pointer-events: none;
+}
+
+@utility recessed-input {
+  background-color: #111214;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+}
+
+body {
+  background-color: #040506;
+  color: #e6e6e6;
+  font-family: var(--font-sans);
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #0d0e10;
+}
+::-webkit-scrollbar-thumb {
+  background: #343536;
+  border-radius: 2px;
+}
+
+/* Cursor and inputs */
+.terminal-cursor::after {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 1.2em;
+  background-color: white;
+  vertical-align: middle;
+  margin-left: 4px;
+}
